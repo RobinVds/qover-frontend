@@ -1,20 +1,47 @@
+import { AxiosError } from 'axios';
 import { useState } from 'react';
 import api from '../api';
-import { RequestQuote, RequestQuoteResponse } from '../types/quote';
+import { useAppDispatch } from '../store/hooks';
+import { setQuotes } from '../store/slices/quotes/quoteSlice';
+import { RequestQuote, Quote } from '../types/quote';
 import { RequestHook } from './types';
 
-export const useRequestQuote: RequestHook<RequestQuote, RequestQuoteResponse> = () => {
+type RequestErrorMessage = {
+    purchasePrice?: string[];
+    ageOfDriver?: string[];
+    carType?: string[];
+    global?: string;
+};
+interface RequestError {
+    message: RequestErrorMessage;
+}
+
+export const useRequestQuote: RequestHook<RequestQuote, Quote, RequestErrorMessage> = () => {
     const [loading, setLoading] = useState(false);
-    const [errors, setErrors] = useState([]);
-    const [response, setResponse] = useState<RequestQuoteResponse>();
+    const [errors, setErrors] = useState<RequestErrorMessage>();
+    const [response, setResponse] = useState<Quote>();
+
+    const dispatch = useAppDispatch();
 
     const request = async (request: RequestQuote) => {
         try {
             setLoading(true);
+            setErrors(undefined);
+
             const response = await api.requestQuote(request);
+
+            dispatch(setQuotes(response));
             setResponse(response);
         } catch (error) {
-            setErrors(errors);
+            console.log('Error: ', error);
+            const typedError = error as AxiosError;
+            const data = typedError.response?.data as RequestError;
+            if (data) {
+                setErrors(data.message);
+            }
+            setErrors({ global: typedError.message });
+
+            setLoading(false);
         }
     };
 

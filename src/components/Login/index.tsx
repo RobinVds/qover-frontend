@@ -2,8 +2,8 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useLogin } from '../../hooks/useLogin';
-import Button from '../common/Button';
-import ErrorBox from '../common/ErrorBox';
+import LoginButton from './components/LoginButton';
+import ErrorBox from './components/ErrorBox';
 import CheckBox from './components/CheckBox';
 import LoginInput from './components/LoginInput';
 import Logo from './components/Logo';
@@ -12,13 +12,12 @@ type LoginProps = {};
 
 const Login: React.FC<LoginProps> = (props) => {
     const [remember, setRemember] = React.useState(false);
-    const { loading, errors, request, response } = useLogin();
+    const { loading, errors, request } = useLogin();
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
     React.useEffect(() => {
         if (isAuthenticated) {
-            console.log(isAuthenticated);
             navigate('/request-quote');
         }
     }, [isAuthenticated]);
@@ -51,13 +50,15 @@ const Login: React.FC<LoginProps> = (props) => {
                     <div>Forgot your password?</div>
                 </div>
                 <div className="mt-12 mb-4 flex flex-col">
-                    {hasErrors && <ErrorBox message="Password of username incorrect! Please try again." className="mb-2" />}
-                    <Button type="submit">Sign in to your account</Button>
+                    {hasErrors && <ErrorBox message="Password or username incorrect! Please try again." className="mb-2" />}
+                    <LoginButton loading={loading} type="submit">
+                        Sign in to your account
+                    </LoginButton>
                 </div>
             </form>
-            <Button className="absolute bottom-0 w-full lg:w-4/12 md:-mb-32 lg:-mb-24 xl:-mb-12" secondary>
+            <LoginButton className="absolute bottom-0 w-full lg:w-4/12 md:-mb-32 lg:-mb-24 xl:-mb-12" secondary>
                 Don't have an account? <u>Ask access</u>
-            </Button>
+            </LoginButton>
         </div>
     );
 };
