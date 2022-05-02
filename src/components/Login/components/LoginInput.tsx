@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 type LoginInputProps = {
     label?: string;
@@ -17,7 +17,11 @@ const LoginInput: React.FC<LoginInputProps & React.InputHTMLAttributes<HTMLInput
                     {label}
                 </label>
             )}
-            <input ref={inputRef} className={`appearance-none text-xl text-gray-600 focus:outline-none border-b-2 border-blue-300 focus:border-blue-500 ${inputClassName}`} {...inputProps} />
+            <input
+                ref={inputRef}
+                className={`appearance-none text-xl text-gray-600 focus:outline-none border-b-2 border-blue-300 focus:border-blue-500 ${inputClassName}`}
+                {...inputProps}
+            />
         </div>
     );
 };

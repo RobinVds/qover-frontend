@@ -5,6 +5,7 @@ import { FiChevronDown } from 'react-icons/fi';
 import NumberInput from './components/NumberInput';
 import { CarTypes } from '../../types/quote';
 import ErrorMessage from './components/ErrorMessage';
+import SelectInput from './components/SelectInput';
 
 type RequestQuoteProps = {};
 
@@ -47,14 +48,13 @@ const RequestQuote: React.FC<RequestQuoteProps> = (props) => {
 
                     <div className="mr-4 text-lg text-grayBrown-500 ">Car</div>
                     <div className=" col-span-2 border-2 p-2 flex justify-between items-center rounded">
-                        <select id="car" className="appearance-none focus:outline-none text-lg bg-white w-full">
-                            <option value="BMW" selected>
-                                BMW
-                            </option>
-                            <option value="Audi">Audi</option>
-                            <option value="Porsche">Porsche</option>
-                        </select>
-                        <FiChevronDown className="text-teal-300 text-2xl" />
+                        <SelectInput
+                            options={[
+                                { label: 'Audi', value: 'Audi' },
+                                { label: 'Porsche', value: 'Porsche' },
+                                { label: 'BMW', value: 'BMW' }
+                            ]}
+                        />
                     </div>
 
                     <div className="mr-4 text-lg text-grayBrown-500 ">Purchase Price</div>
@@ -65,8 +65,8 @@ const RequestQuote: React.FC<RequestQuoteProps> = (props) => {
                     <button className="text-white bg-teal-300 py-3 px-6 rounded font-bold mt-4" disabled={loading} type="submit">
                         Get a price
                     </button>
-
                     <EmptyGridCell />
+
                     {errors?.global && (
                         <>
                             <EmptyGridCell />

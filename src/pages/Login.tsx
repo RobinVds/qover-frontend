@@ -1,18 +1,8 @@
 import * as React from 'react';
-import { FiChevronLeft } from 'react-icons/fi';
+import Header from '../components/layout/Header';
 import Login from '../components/Login';
 
 type LoginPageProps = {};
-
-const Header: React.FC = () => (
-    <div className="absolute w-screen h-8 top-0 left-0 z-10">
-        <div className="bg-white bg-opacity-10 flex h-full z-10">
-            <div className="container mx-auto text-white h-8 flex items-center text-xs">
-                <FiChevronLeft /> QOVER.ME
-            </div>
-        </div>
-    </div>
-);
 
 const LoginPage: React.FC<LoginPageProps> = () => {
     return (

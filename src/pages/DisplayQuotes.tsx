@@ -1,18 +1,10 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
 import background from '../assets/background-travel@3x.png';
 import DisplayQuotes from '../components/DisplayQuotes';
 
 type DisplayQuotesPageProps = {};
 
-const DisplayQuotesPage: React.FC<DisplayQuotesPageProps> = (props) => {
-    const { isAuthenticated } = useAuth();
-    const navigate = useNavigate();
-    React.useEffect(() => {
-        if (!isAuthenticated) navigate('/login');
-    }, [isAuthenticated, navigate]);
-
+const DisplayQuotesPage: React.FC<DisplayQuotesPageProps> = () => {
     return (
         <>
             <div className="absolute -z-10 bg-gray-100 w-full h-full">

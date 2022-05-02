@@ -9,7 +9,7 @@ type InitialState = {
 const initialState: InitialState = {};
 
 export const quoteSlice = createSlice({
-    name: 'counter',
+    name: 'quote',
     initialState: initialState,
     reducers: {
         setQuotes: (state, action: PayloadAction<Quote>) => {
