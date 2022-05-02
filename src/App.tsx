@@ -13,9 +13,30 @@ const App: React.FC<AppProps> = (props) => {
             <Routes>
                 <Route path="/" element={<LoginPage />} />
                 <Route path="/login" element={<LoginPage />} />
-                <ProtectedRoute path="/request-quote" element={<RequestQuotePage />} />
-                <ProtectedRoute path="/display-quotes" element={<DisplayQuotesPage />} />
-                <ProtectedRoute path="*" element={<div>Page not found</div>} />
+                <Route
+                    path="/request-quote"
+                    element={
+                        <ProtectedRoute>
+                            <RequestQuotePage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/display-quotes"
+                    element={
+                        <ProtectedRoute>
+                            <DisplayQuotesPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="*"
+                    element={
+                        <ProtectedRoute>
+                            <div>Page not found</div>
+                        </ProtectedRoute>
+                    }
+                />
             </Routes>
         </BrowserRouter>
     );

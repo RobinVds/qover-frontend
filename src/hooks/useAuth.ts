@@ -9,7 +9,6 @@ export const useAuth = () => {
         (async () => {
             try {
                 const response = await api.validateJwt();
-                console.log('response', response.status);
                 setIsAuthenticated(response.data);
             } catch (error) {
                 setIsAuthenticated(false);

@@ -7,6 +7,8 @@ import ErrorBox from './components/ErrorBox';
 import CheckBox from './components/CheckBox';
 import LoginInput from './components/LoginInput';
 import Logo from './components/Logo';
+import { AxiosError } from 'axios';
+import { formatErrorMessage } from './utils';
 
 type LoginProps = {};
 
@@ -20,7 +22,7 @@ const Login: React.FC<LoginProps> = (props) => {
         if (isAuthenticated) {
             navigate('/request-quote');
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, navigate]);
 
     const onSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -36,6 +38,7 @@ const Login: React.FC<LoginProps> = (props) => {
     };
 
     const hasErrors = errors.length > 0;
+    const errorMessages = errors.map((err: AxiosError) => formatErrorMessage(err));
 
     return (
         <div className="flex justify-center relative items-center h-4/5 md:h-2/5">
@@ -50,7 +53,7 @@ const Login: React.FC<LoginProps> = (props) => {
                     <div>Forgot your password?</div>
                 </div>
                 <div className="mt-12 mb-4 flex flex-col">
-                    {hasErrors && <ErrorBox message="Password or username incorrect! Please try again." className="mb-2" />}
+                    {hasErrors && <ErrorBox message={errorMessages.join(', ')} className="mb-2" />}
                     <LoginButton loading={loading} type="submit">
                         Sign in to your account
                     </LoginButton>

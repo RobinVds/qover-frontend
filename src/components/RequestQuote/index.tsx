@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRequestQuote } from '../../hooks/useRequestQuote';
-import { FiChevronDown } from 'react-icons/fi';
 import NumberInput from './components/NumberInput';
 import { CarTypes } from '../../types/quote';
 import ErrorMessage from './components/ErrorMessage';
@@ -19,7 +18,7 @@ const RequestQuote: React.FC<RequestQuoteProps> = (props) => {
         if (response) {
             navigate('/display-quotes');
         }
-    }, [response]);
+    }, [response, navigate]);
 
     const onSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();

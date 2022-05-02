@@ -33,13 +33,14 @@ export const useRequestQuote: RequestHook<RequestQuote, Quote, RequestErrorMessa
             dispatch(setQuotes(response));
             setResponse(response);
         } catch (error) {
-            console.log('Error: ', error);
             const typedError = error as AxiosError;
             const data = typedError.response?.data as RequestError;
+
             if (data) {
                 setErrors(data.message);
+            } else {
+                setErrors({ global: typedError.message });
             }
-            setErrors({ global: typedError.message });
 
             setLoading(false);
         }
