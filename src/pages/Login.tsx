@@ -6,7 +6,7 @@ type LoginPageProps = {};
 
 const LoginPage: React.FC<LoginPageProps> = () => {
     return (
-        <div className="bg-login-pattern w-full h-full">
+        <div className="bg-login-pattern h-full">
             <Header />
             <div className="container mx-auto h-full flex flex-col">
                 <div className="flex justify-center flex-grow flex-col">

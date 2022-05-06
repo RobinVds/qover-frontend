@@ -27,3 +27,14 @@ export type Quote = {
     car: CarTypes;
     purchasePrice: number;
 };
+
+export interface RequestError {
+    message: RequestErrorMessage;
+}
+
+export type RequestErrorMessage = {
+    purchasePrice?: string[];
+    ageOfDriver?: string[];
+    carType?: string[];
+    global?: string;
+};

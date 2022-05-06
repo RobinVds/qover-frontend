@@ -1,24 +1,27 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRequestQuote } from '../../hooks/useRequestQuote';
 import NumberInput from './components/NumberInput';
 import { CarTypes } from '../../types/quote';
 import ErrorMessage from './components/ErrorMessage';
 import SelectInput from './components/SelectInput';
+import { requestQuote } from '../../store/slices/quotes/actions';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 type RequestQuoteProps = {};
 
 const EmptyGridCell = () => <div />;
 
 const RequestQuote: React.FC<RequestQuoteProps> = (props) => {
-    const { loading, errors, request, response } = useRequestQuote();
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const quotes = useAppSelector((state) => state.quotes);
 
     React.useEffect(() => {
-        if (response) {
+        console.log(quotes);
+        if (quotes.loading === 'succeeded') {
             navigate('/display-quotes');
         }
-    }, [response, navigate]);
+    }, [quotes, navigate]);
 
     const onSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -29,11 +32,13 @@ const RequestQuote: React.FC<RequestQuoteProps> = (props) => {
             ageOfDriver: { value: number };
         };
 
-        await request({
-            purchasePrice: formElements.purchasePrice.value,
-            car: formElements.car.value,
-            ageOfDriver: formElements.ageOfDriver.value
-        });
+        dispatch(
+            requestQuote({
+                purchasePrice: formElements.purchasePrice.value,
+                car: formElements.car.value,
+                ageOfDriver: formElements.ageOfDriver.value
+            })
+        );
     };
 
     return (
@@ -42,7 +47,7 @@ const RequestQuote: React.FC<RequestQuoteProps> = (props) => {
                 <div className=" grid grid-cols-3 gap-4 w-full px-8 xl:px-64">
                     <div className="mr-4 text-lg text-grayBrown-500 ">Age of the driver</div>
                     <div className=" col-span-2">
-                        <NumberInput defaultValue={0} id="ageOfDriver" className="w-1/4" errors={errors?.ageOfDriver} />
+                        <NumberInput defaultValue={0} id="ageOfDriver" className="w-1/4" errors={quotes.error?.ageOfDriver} />
                     </div>
 
                     <div className="mr-4 text-lg text-grayBrown-500 ">Car</div>
@@ -57,20 +62,20 @@ const RequestQuote: React.FC<RequestQuoteProps> = (props) => {
                     </div>
 
                     <div className="mr-4 text-lg text-grayBrown-500 ">Purchase Price</div>
-                    <div className={`col-span-2 ${errors?.purchasePrice && 'text-red-500'}`}>
-                        <NumberInput defaultValue={0} id="purchasePrice" className="w-1/4" errors={errors?.purchasePrice} extra="€" />
+                    <div className={`col-span-2 ${quotes.error?.purchasePrice && 'text-red-500'}`}>
+                        <NumberInput defaultValue={0} id="purchasePrice" className="w-1/4" errors={quotes.error?.purchasePrice} extra="€" />
                     </div>
 
-                    <button className="text-white bg-teal-300 py-3 px-6 rounded font-bold mt-4" disabled={loading} type="submit">
+                    <button className="text-white bg-teal-300 py-3 px-6 rounded font-bold mt-4" disabled={quotes.loading === 'pending'} type="submit">
                         Get a price
                     </button>
                     <EmptyGridCell />
 
-                    {errors?.global && (
+                    {quotes.error?.global && (
                         <>
                             <EmptyGridCell />
                             <div className="col-span-2">
-                                <ErrorMessage message={errors?.global} />
+                                <ErrorMessage message={quotes.error?.global} />
                             </div>
                         </>
                     )}
